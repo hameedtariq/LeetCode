@@ -1,32 +1,39 @@
-bool _ = []{ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);return false;}();
-class Solution {
-    vector<vector<int>> dv = {
-        {1,0}, {0,1}, {-1,0}, {0,-1}
-    };
-public:
-    int nearestExit(vector<vector<char>>& maze, vector<int>& entrance) {
-        int m = maze.size();
-        int n = maze[0].size();
-        queue<vector<int>> q;
-        maze[entrance[0]][entrance[1]] = 'x';
-        q.push({entrance[0], entrance[1], 0});
-        while(!q.empty()){
-            auto x = q.front();
-            q.pop();
-            for(auto& e: dv){
-                int newX = x[0] + e[0];
-                int newY = x[1] + e[1];
-                if((newX < 0 || newX >= m || newY < 0 || newY >= n)){
-                    if((x[2] != 0))
-                        return x[2];
-                    else continue;
-                }
-                if(maze[newX][newY] == '.'){
-                    maze[newX][newY] = 'x';
-                    q.push({newX, newY, x[2] + 1});
+class Solution{
+    public:
+        int nearestExit(vector<vector<char>>& maze, vector<int>& entrance) {
+            ios_base::sync_with_stdio(false);
+            cin.tie(NULL);
+            queue<pair<int,int>> BFS {{{entrance[0], entrance[1]}}};
+            pair<int, int> CurrentCell;
+            int MaxX = size(maze) - 1;
+            int MaxY = size(maze[0]) - 1;
+            int X;
+            int Y;
+            int steps = 0;
+            char Cell = '.';
+            char Wall = '+';
+            int size;
+            int Directions [] {0, 1, 0, -1, 0};
+            while(!BFS.empty()){
+                ++steps;
+                size = BFS.size();
+                for(int i=0; i<size; i++){
+                    CurrentCell = BFS.front();
+                    BFS.pop();
+                    for(int j=0; j<4; j++){
+                        X = CurrentCell.first + Directions[j];
+                        Y = CurrentCell.second + Directions[j + 1];
+                        if(X <= MaxX && X >= 0 && Y <= MaxY && Y >= 0 &&
+                            maze[X][Y] == Cell){
+                            if((X == MaxX || X == 0 || Y == MaxY || Y == 0) &&
+                                (X != entrance[0] || Y != entrance[1]))
+                                return steps;
+                            maze[X][Y] = Wall;
+                            BFS.push({X, Y});
+                        }
+                    }
                 }
             }
+            return -1;
         }
-        return -1;
-    }
 };
