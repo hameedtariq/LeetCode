@@ -1,3 +1,4 @@
+bool _ = []{ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);return false;}();
 class Solution {
     vector<vector<int>> dv = {
         {1,0}, {0,1}, {-1,0}, {0,-1}
