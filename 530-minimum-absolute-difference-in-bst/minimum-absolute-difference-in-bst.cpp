@@ -12,30 +12,27 @@
 class Solution {
 public:
     int getMinimumDifference(TreeNode* root) {
-        // int minL = INT_MAX, minR=INT_MAX;
-        // if(root->left){
-        //     minL = min(abs(root->val - root->left->val),getMinimumDifference(root->left));
-        // }
-        // if(root->right){
-        //     minR = min(abs(root->val - root->right->val),getMinimumDifference(root->right));
-        // }
-        // return min(minL,minR);
-
-        // inorder traversal and check neighbouring differences!
-        // LVR
-        vector<int> container;
-        LVR(root, container);
-        int n = container.size(), mn = INT_MAX;
-        for(int i =0; i< n-1; i++){
-            mn = min(mn,abs(container[i]-container[i+1]));
-        }
-        return mn;
+        int last = -1;
+        return LVR(root,last);
     }
-    void LVR(TreeNode* root,vector<int>& cont){
-        if(!root) return;
-        LVR(root->left,cont);
-        cont.push_back(root->val);
-        LVR(root->right,cont);
+    int LVR(TreeNode* root,int& prev){
+        int mn = INT_MAX;
+        if(!root) return mn;
+        mn = LVR(root->left, prev);
+        if(prev != -1){
+            mn = min(abs(root->val-prev),mn);
+        }
+        prev = root->val;
+        mn = min(LVR(root->right,prev), mn);
+        return mn;
     }
     
 };
+
+// if(!root) return INT_MAX;
+        // int mn = INT_MAX;
+        // if(root->left){
+        //     LVR(root->left,cont);
+        // }
+        // cont.push_back(root->val);
+        // LVR(root->right,cont);
