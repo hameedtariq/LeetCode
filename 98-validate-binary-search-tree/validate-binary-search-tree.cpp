@@ -21,14 +21,16 @@ public:
     }
     bool inorder(TreeNode* root, int& prev, bool& hit){
         if(!root) return true;
-        bool ans = inorder(root->left,prev,hit);
+        if(!inorder(root->left,prev,hit)){
+            return false;
+        }
         if(hit) {
             if(!(prev < root->val)) return false;
         }
         else
             hit = true;
         prev = root->val;
-        ans = ans && inorder(root->right, prev,hit);
-        return ans;       
+        if(!inorder(root->right, prev,hit)) return false;
+        return true;       
     }
 };
