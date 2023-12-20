@@ -13,7 +13,9 @@ class Solution {
 public:
     int getMinimumDifference(TreeNode* root) {
         int last = -1;
-        return LVR(root,last);
+        int m = LVR(root,last);
+        root->right = root->left = nullptr;
+        return m;
     }
     int LVR(TreeNode* root,int& prev){
         int mn = INT_MAX;
