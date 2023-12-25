@@ -1,33 +1,59 @@
 class Solution {
-    // vector<vector<int>> dv = {{0,1}, {1,0}};
-    vector<vector<int>> dv = {{0,-1}, {-1,0}};
 public:
     int uniquePaths(int m, int n) {
-        vector<vector<int>> memo(m,vector<int>(n,0));
-        for(int i =1; i<=m; i++){
-            memo[m-i][n-1] = 1;
+        //return uniquePathsTopDown(m, n);
+        return uniquePathsBottomUp(m, n);
+    }
+    
+    int uniquePathsTopDown(int m, int n) {
+        this->m = m;
+        this->n = n;
+        this->cache = vector(m, vector<int>(n, 0));
+        return dp(m-1, n-1);
+    }
+    
+    int m;
+    int n;
+    vector<vector<int>> cache;
+    int dp(int row, int col) {
+        if (row == 0 && col == 0) {
+            return 1;
         }
-        for(int i =1; i<=n; i++){
-            memo[m-1][n-i] = 1;
+        
+        if (cache[row][col] == 0) {
+            int nbPaths = 0;
+            if (row > 0) {
+                nbPaths += dp(row-1, col);
+            }
+            if (col > 0) {
+                nbPaths += dp(row, col-1);
+            } 
+            cache[row][col] = nbPaths;
         }
-        for(int i = m-2; i>=0; i--){
-            for(int j = n-2; j>=0; j--){
-                memo[i][j] = memo[i+1][j] + memo[i][j+1]; 
+        
+        return cache[row][col];    
+    }
+    
+    int uniquePathsBottomUp(int m, int n) {
+        vector<vector<int>> cache(m, vector<int>(n, 0));
+        cache[0][0] = 1;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                }
+                int nbPaths = 0;
+                if (i > 0) {
+                    nbPaths += cache[i-1][j];
+                }
+                if (j > 0) {
+                    nbPaths += cache[i][j-1];
+                }
+                cache[i][j] = nbPaths;
             }
         }
-        return memo[0][0];
 
-        // return rec(--m,--n,0,0,memo);
-
+        return cache[m-1][n-1];
     }
-    // int rec(int& m, int& n, int i, int j,vector<vector<int>>& memo){
-    //     if(i==m && j==n) return 1;
-    //     if(i > m || j > n) return 0;
-    //     if(memo[i][j] != -1) return memo[i][j];
-    //     memo[i][j] = 0;
-    //     for(auto &v: dv){
-    //         memo[i][j] += rec(m,n,i+v[0], j+v[1],memo);
-    //     }
-    //     return memo[i][j];
-    // }
 };
