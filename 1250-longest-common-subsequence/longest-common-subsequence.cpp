@@ -1,3 +1,4 @@
+bool _ = []() {ios::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);return false;}();
 class Solution {
 public:
     int longestCommonSubsequence(string t1, string t2) {
