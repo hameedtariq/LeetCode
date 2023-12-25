@@ -12,10 +12,8 @@ public:
             for(int j = n-2; j>=0; j--){
                 memo[0][j] = memo[1][j] + memo[0][j+1]; 
             }
-            for(int i =1; i<=n; i++){
-                memo[1][n-i] = memo[0][n-i];
-            }
+            swap(memo[0],memo[1]);
         }
-        return memo[0][0];
+        return memo[1][0];
     }
 };
