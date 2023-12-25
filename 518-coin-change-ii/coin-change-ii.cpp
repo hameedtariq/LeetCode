@@ -1,4 +1,5 @@
 class Solution {
+    bool _ = [](){ios::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr); return false;}();
 public:
     int change(int amount, vector<int>& coins) {
         // unordered_set<int> du;
