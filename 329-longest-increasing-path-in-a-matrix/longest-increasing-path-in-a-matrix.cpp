@@ -1,32 +1,48 @@
 class Solution {
-    vector<vector<int>> dv = {{1,0}, {-1,0}, {0,1}, {0,-1}};
 public:
-    int longestIncreasingPath(vector<vector<int>>& matrix) {
-        int path = -1;
+    Solution() {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        wcin.tie(nullptr);
+        cerr.tie(nullptr);
+        wcerr.tie(nullptr);
+        clog.tie(nullptr);
+        wclog.tie(nullptr);
+    }
+
+    int longest(const vector<vector<int>>& matrix, int i, int j) {
         int m = matrix.size();
-        int n = matrix[0].size();
-        vector<vector<bool>> visited(m,vector<bool>(n,false));
-        vector<vector<int>> memo(m,vector<int>(n,-1));
-        for(int i = 0; i < m; i++){
-            for(int j = 0; j < n; j++){
-                path = max(path, dfs(matrix,visited,i,j,-1, memo));
+        int n = matrix[0].size();   
+        if (memo[i * n + j] != -1) {
+            return memo[i * n + j];
+        }
+        int best = 0;
+        int cij = matrix[i][j];
+        for (int k = -1; k <= 1; ++k) {
+            if (i + k < 0 || i + k >= m) continue;
+            for (int l = -1; l <= 1; ++l) {
+                if (j + l < 0 || j + l >= n || std::abs(k + l) != 1) continue;
+                if (cij < matrix[i + k][j + l]) {
+                    best = std::max(best, longest(matrix, i + k, j + l) + 1);
+                }
             }
         }
-        return path;
+        memo[i * n + j] = best;
+        return best;
     }
-    int dfs(vector<vector<int>>& m, vector<vector<bool>>& v, int i,int j, int prev, vector<vector<int>> &memo) {
-        if(i >= m.size() || i < 0 || j >= m[0].size() || j < 0 || v[i][j]) {
-            return 0;
+
+    int longestIncreasingPath(vector<vector<int>>& matrix) {
+        int m = matrix.size();
+        int n = matrix[0].size();
+        memo.resize(m * n, -1);
+        int best = 0;
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                best = std::max(best, longest(matrix, i, j) + 1);
+            }
         }
-        if(m[i][j] <= prev) return 0;
-        if(memo[i][j] != -1) return memo[i][j];
-        v[i][j] = true;
-        int path = 1;
-        for(auto& x: dv){
-            if(i+x[0] >= m.size() || i+x[0] < 0 || j+x[1] >= m[0].size() || j+x[1] < 0 || v[i+x[0]][j+x[1]]) continue;
-            path = max(path,dfs(m,v,i+x[0],j+x[1], m[i][j],memo) + 1);
-        }
-        v[i][j] = false;
-        return memo[i][j] = path;
+        return best;
     }
+
+    std::vector<int> memo;
 };
