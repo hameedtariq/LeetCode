@@ -1,32 +1,25 @@
+bool _ = []() {ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); return false;}();
 class Solution {
-    int dp[101][101];
-    bool solve(string &s1, string &s2, string &s3,int i,int j)
-    {
-        if(i == s1.length() && j == s2.length() && i+j == s3.length()) return true;
-
-        if(dp[i][j] != -1) return dp[i][j];
-
-        bool result = false;
-        
-        if(i < s1.length() && j < s2.length() && s1[i] == s3[i+j] && s2[j] == s3[i+j])
-        {
-            result = (solve(s1,s2,s3,i+1,j) || solve(s1,s2,s3,i,j+1));
-        }
-        else if(i < s1.length() && s1[i] == s3[i+j])
-        {
-            result = solve(s1,s2,s3,i+1,j);
-        }
-        else if(j < s2.length() && s2[j] == s3[i+j])
-        {
-            result = solve(s1,s2,s3,i,j+1);
-        }
-        return dp[i][j] = result;
-    }
 public:
-    bool isInterleave(string s1, string s2, string s3) 
-    {
-      if(s1.length() + s2.length() != s3.length()) return false;
-      memset(dp,-1,sizeof(dp));
-      return solve(s1,s2,s3,0,0);
+    bool isInterleave(string s1, string s2, string s3) {
+        if(s1.size()+s2.size()!= s3.size()) return false;
+        vector<vector<short>> memo(s1.size()+1,vector<short>(s2.size()+1, -1));
+        return rec(s1,s2,s3, 0,0,memo); 
+    }
+    bool rec(string &s1, string &s2, string &s3, int i, int j, vector<vector<short>> & memo){
+        if(i == s1.size() && j == s2.size()) return true;
+        if(memo[i][j] != -1) return memo[i][j];
+        memo[i][j] = false;
+        if(i < s1.size()) {
+            if(s1[i] == s3[i+j]){
+                memo[i][j]  = memo[i][j] || rec(s1,s2,s3, i+1, j,memo);
+            }
+        }
+        if(j < s2.size()) {
+            if(s2[j] == s3[i+j]){
+                memo[i][j]  = memo[i][j] || rec(s1,s2,s3, i, j+1,memo);
+            }
+        }
+        return memo[i][j];
     }
 };
