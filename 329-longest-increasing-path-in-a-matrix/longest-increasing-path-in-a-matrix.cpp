@@ -1,4 +1,3 @@
-bool _ = []{ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);return false;}();
 class Solution {
     vector<vector<int>> dv = {{1,0}, {-1,0}, {0,1}, {0,-1}};
 public:
@@ -22,8 +21,9 @@ public:
         if(m[i][j] <= prev) return 0;
         if(memo[i][j] != -1) return memo[i][j];
         v[i][j] = true;
-        int path = -1;
+        int path = 1;
         for(auto& x: dv){
+            if(i+x[0] >= m.size() || i+x[0] < 0 || j+x[1] >= m[0].size() || j+x[1] < 0 || v[i+x[0]][j+x[1]]) continue;
             path = max(path,dfs(m,v,i+x[0],j+x[1], m[i][j],memo) + 1);
         }
         v[i][j] = false;
