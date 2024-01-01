@@ -2,7 +2,7 @@ bool _ = []{ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);return false;}();
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
-        map<int,int> count;
+        unordered_map<int,int> count;
         for(auto&a: nums) {
             count[a]++;
         }
