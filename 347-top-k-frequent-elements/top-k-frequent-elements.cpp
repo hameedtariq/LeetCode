@@ -1,25 +1,32 @@
-bool _ = []{ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);return false;}();
+// Time: O(nlogk)
+// Space: O(n)
+struct T {
+  int num;
+  int freq;
+  T(int num, int freq) : num(num), freq(freq) {}
+};
+
 class Solution {
-public:
-    struct myComp {
-        constexpr bool operator()(pair<int, int> const& a,pair<int, int> const& b) const noexcept {
-            return a.second < b.second;
-        }
-    };
-    vector<int> topKFrequent(vector<int>& nums, int k) {
-        sort(nums.begin(),nums.end());
-        int n = nums.size();
-        vector<int> ans(k,-1);
-        priority_queue<pair<int,int>, vector<pair<int,int>>, myComp> pq;
-        for(int i =0; i< n;) {
-            int j =i+1;
-            for(; j<n && nums[j] == nums[j-1]; j++){};
-            pq.push({nums[i], j-i});
-            i=j;
-        }
-        for(int i=0; i<k;i++){
-            ans[i] = pq.top().first;pq.pop();
-        }
-        return ans;
+ public:
+  vector<int> topKFrequent(vector<int>& nums, int k) {
+    const int n = nums.size();
+    vector<int> ans;
+    unordered_map<int, int> count;
+    auto compare = [](const T& a, const T& b) { return a.freq > b.freq; };
+    priority_queue<T, vector<T>, decltype(compare)> minHeap(compare);
+
+    for (const int num : nums)
+      ++count[num];
+
+    for (const auto& [num, freq] : count) {
+      minHeap.emplace(num, freq);
+      if (minHeap.size() > k)
+        minHeap.pop();
     }
+
+    while (!minHeap.empty())
+      ans.push_back(minHeap.top().num), minHeap.pop();
+
+    return ans;
+  }
 };
