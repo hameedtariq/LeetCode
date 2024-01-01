@@ -1,3 +1,4 @@
+bool _ = [](){ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); return false;}();
 class Solution {
 public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
