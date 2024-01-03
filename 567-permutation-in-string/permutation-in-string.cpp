@@ -11,7 +11,6 @@ public:
         }
         int p = 0, q = 0;
         while(q<y){    
-            cout << p << " , " << q << endl;
             // window size is less that s1 size 
             // and s2[q] was present in s1 
             // and there is a occurance available        
@@ -19,7 +18,6 @@ public:
                 m[s2[q]]--;
                 q++;
             }
-            cout << p << " , " << q << endl;
             // if subsequence that matched has same length as x then we found a match
             if(q-p == x) return true;
             // determine reason of loop break
@@ -30,7 +28,7 @@ public:
                     p++;
                 }
                 p = q = q+1;
-            }else {
+            }else { // 2- exists but occupied
                 if(p!=q){
                     m[s2[p]]++;
                 }
