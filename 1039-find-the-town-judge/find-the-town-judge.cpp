@@ -1,20 +1,22 @@
 class Solution {
 public:
     int findJudge(int n, vector<vector<int>>& trust) {
-        if(n==trust.size()) return -1;
-        unordered_map<int,vector<int>> graph;
-        unordered_map<int,vector<int>> graph2;
-        
-        for(int i =0; i< trust.size(); i++){
-            graph[trust[i][0]].push_back(trust[i][1]);
-            graph2[trust[i][1]].push_back(trust[i][0]);
-        }
-        for(int i =1; i<= n; i++){
-            if(graph[i].size() == 0){
-                if(graph2[i].size() == n-1) return i;
-            }
-        }
-        
-        return -1;
+         ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    //1st value of pair denotes how many he trusts
+    //2nd value of pair denotes how many trusts him
+    vector<pair<int,int>> arr(n+1,{0,0});
+    for(int i=0; i<trust.size(); ++i){
+        arr[trust[i][0]].first+=1;
+        arr[trust[i][1]].second+=1;
+    }
+
+    //Now find who is trusted by N-1 others and he/she don not trusts others
+    for(int i=1;i<=n;++i)
+        if(arr[i].first==0 && arr[i].second==n-1)
+            return i;
+
+    return -1;        
     }
 };
