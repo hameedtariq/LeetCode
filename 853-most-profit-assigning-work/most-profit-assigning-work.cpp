@@ -1,30 +1,25 @@
 class Solution {
 public:
     int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int>& worker) {
-        // sort(worker.begin(),worker.end(), [](int& a, int& b) {
-        //     return a < b;
-        // });
-        ios::sync_with_stdio(false);
-        cin.tie(nullptr);
-        cout.tie(nullptr);
-        int n = profit.size();
-        vector<pair<int,int>> jobs(n);
-        for(int i =0; i<n; i++){
-            jobs[i].first = (profit[i]);
-            jobs[i].second = (difficulty[i]);
+        int n = worker.size();
+        sort(worker.begin(),worker.end());
+        vector<pair<int,int>> nums(n);
+        for(int i=0;i<n;i++){
+            nums[i] = {difficulty[i],profit[i]};
         }
-        sort(jobs.begin(),jobs.end(), [](auto& a, auto& b) {
-            return a.first > b.first;
-        }); // sort by profit;
-        int total = 0;
-        for(auto& w: worker) {
-            auto it = find_if(jobs.begin(), jobs.end(), [w](auto& job) {
-                return (job.second <= w);
-            });
-            if(it != jobs.end()){
-                total += (*it).first;
+        sort(nums.begin(),nums.end());
+
+        int maxProfit = 0;
+        int tempprofit = 0;
+        for( int i = 0 , j = 0 ; i < n ; i++ ){
+            while(j<n && nums[j].first <= worker[i]){
+                tempprofit = max(nums[j].second,tempprofit);    // stores max profit for all tasks having dificilty <= worker[i]
+                j++;
             }
+            if(j>0 && nums[j-1].first<=worker[i])
+                maxProfit += tempprofit;
         }
-        return total;
+
+        return maxProfit;
     }
 };
