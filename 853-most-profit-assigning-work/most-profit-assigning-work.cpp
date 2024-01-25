@@ -4,6 +4,9 @@ public:
         // sort(worker.begin(),worker.end(), [](int& a, int& b) {
         //     return a < b;
         // });
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
         int n = profit.size();
         vector<pair<int,int>> jobs(n);
         for(int i =0; i<n; i++){
