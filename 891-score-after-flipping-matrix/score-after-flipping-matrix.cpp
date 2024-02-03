@@ -7,7 +7,6 @@ public:
         // do row flips
         for(int i = 0;i <rows; i++) {
             if(grid[i][0] == 0) {
-                cout << "Flipped Row: " << i << endl; 
                 flip(grid, i);
             }
         }
@@ -18,7 +17,6 @@ public:
                 if(grid[j][i] == 1) count++;
             }
             if(count < ceil((float)rows/2)) {
-                cout << "Flipped Col: " << i << endl; 
                 flip(grid, i, false);
             }
         }
