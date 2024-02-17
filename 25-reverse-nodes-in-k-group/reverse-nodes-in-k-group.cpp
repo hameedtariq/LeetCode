@@ -8,37 +8,34 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
+ bool _ = []{ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);return false;}();
 class Solution {
 public:
     ListNode* reverseKGroup(ListNode* head, int k) {
-        if(k==0 || head==NULL) return head;
-// Check if list has sufficient length (atleast count = k) then only proceed
-        int count = 0;
-        ListNode* check = head;
-        while(check!=NULL && count < k) {
-            count++;
-            check=check->next;
+        if(k == 1) return head;
+        auto l = head;
+        auto r = getRight(l, k);
+        if(!r) return l;
+        auto curr = l->next;
+        auto prev = l;
+        while(curr != r) {
+            auto temp = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = temp;
         }
-        if(count<k) return head;
-        
-    // Reverse start    
-        ListNode* cur = head;
-        ListNode* prev = NULL;
-        ListNode* fwd;
-        count = 0;
-        while(cur!=NULL && count < k)
-        {
-            fwd = cur->next;
-            cur->next = prev;
-            prev = cur;
-            cur = fwd;
-            count++;
-        }
-        if(fwd!=NULL)
-        {
-            head->next = reverseKGroup(fwd, k);
-        }
-        return prev;
-        
+        l->next = reverseKGroup(r->next, k);
+        r->next = prev;
+        return r;
     }
+    ListNode* getRight(ListNode* p, int k) {
+        int x = 0;
+        while(p){
+            x++;
+            if(x == k) break;
+            p = p->next;
+        }
+        return p;
+    }
+
 };
