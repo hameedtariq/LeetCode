@@ -1,40 +1,23 @@
-class Solution
-{
+class Solution {
 public:
-  vector<vector<int>> combine(int n, int k)
-  {
-    vector<vector<int>> res;
-    for (int i = 1; i <= n; i++)
+    void f(int i,vector<vector<int>> &ans,vector<int> &v,int &n,int k)
     {
-      auto t = rec(n, k, i);
-      // for(auto& x: t) {
-      //     x.insert(x.begin(),i);
-      // }
-      res.insert(res.end(), t.begin(), t.end());
+        if(v.size()==k)   
+        {
+            ans.push_back(v);
+            return;
+        }
+        for(int j=i;j<=n;j++)
+        {
+            v.push_back(j);
+            f(j+1,ans,v,n,k);
+            v.pop_back();
+        }
     }
-    return res;
-  }
-  vector<vector<int>> rec(int &n, int k, int i)
-  {
-    // base case
-    // n-i > k
-    if (i > n || k <= 0 || n - i < k - 1)
-      return vector<vector<int>>();
-    vector<vector<int>> res;
-    for (int a = i + 1; a <= n; a++)
-    {
-      auto t = rec(n, k - 1, a);
-      for (auto &x : t)
-      {
-        x.insert(x.begin(), i);
-      }
-      if (t.size() != 0)
-        res.insert(res.end(), t.begin(), t.end());
+    vector<vector<int>> combine(int n, int k) {
+        vector<vector<int>> ans;
+        vector<int> v;
+        f(1,ans,v,n,k);
+        return ans;
     }
-    if (res.size() == 0)
-    {
-      res.push_back(vector<int>(1, i));
-    }
-    return res;
-  }
 };
