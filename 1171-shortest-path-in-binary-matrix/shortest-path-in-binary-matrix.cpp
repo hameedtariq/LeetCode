@@ -1,41 +1,54 @@
+struct Point {
+    int x, y;
+    Point(int x, int y) : x(x), y(y) {}
+};
+
 class Solution {
-    vector<vector<int>> dv = {{0,1}, {0, -1}, {1,0}, {-1,0}, {1,1}, {-1, -1}, {1,-1}, {-1,1}};
+    const vector<Point> directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {-1, -1}, {1, -1}, {-1, 1}};
+    int numRows;
+    int numCols;
 public:
     int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
-        // base edge case
-        if(grid[0][0] != 0) return -1;
-        queue<vector<int>> q;
+        if (grid[0][0] != 0) return -1;
+
+        queue<Point> q;
         int count = 0;
-        int goalX = grid.size()-1, goalY = grid[0].size()-1;
-        q.push({0,0});
+        numRows = grid.size();
+        numCols = grid[0].size();
+        const int goalX = numRows - 1;
+        const int goalY = numCols - 1;
+
+        q.push(Point(0, 0));
         grid[0][0] = 2; // mark visited
-        int levelSize = 1;
-        while(!q.empty()) {
+
+        while (!q.empty()) {
             count++;
-            for(int i =0; i<levelSize;i++) {
-                auto next = q.front(); q.pop();
-                
-                if(next[0] == goalX && next[1] == goalY) return count;
-                for(auto& v: dv) {
-                    int newX = v[0] + next[0];
-                    int newY = v[1] + next[1];
-                    if(newX >=0 && newX < grid.size() && newY >= 0 && newY < grid[0].size() && grid[newX][newY] == 0) {
-                        if(newX == goalX && newY == goalY) return count+1;
-                        q.push({newX,newY});
+            int levelSize = q.size();
+
+            for (int i = 0; i < levelSize; i++) {
+                auto next = q.front();
+                q.pop();
+
+                if (next.x == goalX && next.y == goalY) return count;
+
+                for (const auto& dir : directions) {
+                    int newX = dir.x + next.x;
+                    int newY = dir.y + next.y;
+
+                    if (isValid(newX, newY) && grid[newX][newY] == 0) {
+                        if (newX == goalX && newY == goalY) return count + 1;
+                        q.push(Point(newX, newY));
                         grid[newX][newY] = 2; // mark visited
                     }
                 }
             }
-            levelSize = q.size();            
         }
+
         return -1;
     }
-};
 
-auto init = []()
-{ 
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-    return 'c';
-}();
+private:
+    bool isValid(int x, int y) {
+        return x >= 0 && x < numRows && y >= 0 && y < numCols;
+    }
+};
