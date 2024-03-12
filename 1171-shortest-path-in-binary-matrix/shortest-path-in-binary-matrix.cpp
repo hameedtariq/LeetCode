@@ -1,36 +1,34 @@
 class Solution {
-    vector<vector<int>> dv = {{0,1}, {0, -1}, {1,0}, {-1,0}, {1,1}, {-1, -1}, {1,-1}, {-1,1}};
 public:
+    bool isval(int i, int j, int n){
+        return (i>=0 && j>=0 && j<n && i<n);
+    }
     int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
-        // base edge case
-        if(grid[0][0] != 0) return -1;
-        queue<vector<int>> q;
-        int count = 0;
-        int goalX = grid.size()-1, goalY = grid[0].size()-1;
-        q.push({0,0});
-        grid[0][0] = 2; // mark visited
-        int levelSize = 1;
-        while(!q.empty()) {
-            count++;
-            for(int i =0; i<levelSize;i++) {
-                auto next = q.front(); q.pop();
-                
-                if(next[0] == goalX && next[1] == goalY) return count;
-                for(auto& v: dv) {
-                    int newX = v[0] + next[0];
-                    int newY = v[1] + next[1];
-                    if(newX >=0 && newX < grid.size() && newY >= 0 && newY < grid[0].size() && grid[newX][newY] == 0) {
-                        q.push({newX,newY});
-                        grid[newX][newY] = 2; // mark visited
+        int n=grid.size();
+        if(grid[0][0] == 1) return -1;
+        vector<vector<int>>dist(n,vector<int>(n,INT_MAX));
+        dist[0][0] = 1;
+        queue<pair<int,pair<int,int>>> q;
+        q.push({1,{0,0}});
+        while(!q.empty()){
+            int cdist = q.front().first;
+            int i=q.front().second.first,j=q.front().second.second;
+            q.pop();
+            for(int ii=-1;ii<=1;ii++){
+                for(int jj=-1;jj<=1;jj++){
+                    if(!(ii==0 && jj==0) && isval(i+ii,j+jj,n) && grid[ii+i][j+jj] == 0){
+                        if(dist[i+ii][j+jj]>cdist+1){
+                            dist[i+ii][j+jj] = cdist+1;
+                            q.push({cdist+1,{i+ii,j+jj}});
+                        }
                     }
                 }
             }
-            levelSize = q.size();            
         }
-        return -1;
+        if(dist[n-1][n-1] == INT_MAX) return -1;
+        return dist[n-1][n-1];        
     }
 };
-
 auto init = []()
 { 
     ios::sync_with_stdio(0);
