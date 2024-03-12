@@ -1,40 +1,41 @@
 class Solution {
+    vector<vector<int>> dv = {{0,1}, {0, -1}, {1,0}, {-1,0}, {1,1}, {-1, -1}, {1,-1}, {-1,1}};
 public:
     int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
-        int row = grid.size();
-        int col = grid[0].size();
-        vector<vector<int>> visit(row, vector<int>(col));
-        queue<pair<int,int>> queue;
-        queue.push({0,0});
-        visit[0][0] = 1;
-         if (grid[0][0] != 0) {
-            return -1;
-        }
-        int length = 1;
-        while (!queue.empty()) {
-            int queueLength = queue.size();
-            for (int i = 0; i < queueLength; ++i) {
-                pair<int,int> currPair = queue.front();
-                queue.pop();
-                int r = currPair.first;
-                int c = currPair.second;
-                if (r == row - 1 && c == col - 1) {
-                    return length;
-                }
-
-                int neighbors[8][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
-                for (int j = 0; j < 8; ++j) {
-                    int newR = r + neighbors[j][0];
-                    int newC = c + neighbors[j][1];
-                    if (newR < 0 || newC < 0 || newR >= row || newC >= col || grid[newR][newC] || visit[newR][newC]) {
-                        continue;
+        // base edge case
+        if(grid[0][0] != 0) return -1;
+        queue<vector<int>> q;
+        int count = 0;
+        int goalX = grid.size()-1, goalY = grid[0].size()-1;
+        q.push({0,0});
+        grid[0][0] = 2; // mark visited
+        int levelSize = 1;
+        while(!q.empty()) {
+            count++;
+            for(int i =0; i<levelSize;i++) {
+                auto next = q.front(); q.pop();
+                
+                if(next[0] == goalX && next[1] == goalY) return count;
+                for(auto& v: dv) {
+                    int newX = v[0] + next[0];
+                    int newY = v[1] + next[1];
+                    if(newX >=0 && newX < grid.size() && newY >= 0 && newY < grid[0].size() && grid[newX][newY] == 0) {
+                        if(newX == goalX && newY == goalY) return count+1;
+                        q.push({newX,newY});
+                        grid[newX][newY] = 2; // mark visited
                     }
-                    queue.push({newR, newC});
-                    visit[newR][newC] = 1;
                 }
             }
-            length++;
+            levelSize = q.size();            
         }
         return -1;
     }
 };
+
+auto init = []()
+{ 
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
