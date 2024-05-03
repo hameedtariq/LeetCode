@@ -1,40 +1,53 @@
 class Solution {
 public:
-    int compareVersion(string version1, string version2) {
-        auto v1 = split(version1,'.');
-        auto v2 = split(version2,'.');
-        int x = 0, y =0;
-        while(x < v1.size() && y < v2.size()) {
-            int a = stoi(v1[x]);
-            int b = stoi(v2[y]);
-            if( a== b) {
-                x++;
-                y++;
-            }else if(a > b) {
-                return 1;
-            }else {
-                return -1;
+    int compareVersion(string a, string b) 
+    {
+        int n=a.length(), m=b.length(), i=0, j=0;
+        while(i<n && j<m)
+        {
+            long long int p=0, q=0;
+            while(i<n && a[i]!='.')
+            {
+                p=(p*10)+a[i]-'0';
+                i++;
             }
+            while(j<m && b[j]!='.')
+            {
+                q=(q*10)+b[j]-'0';
+                j++;
+            }
+            if(p>q)
+                return 1;
+            else if(q>p)
+                return -1;
+            i++;
+            j++;
         }
-        while(x < v1.size()){
-            int a = stoi(v1[x]);
-            if(a != 0) return 1;
-            x++;
+
+        while(i<n)
+        {
+            long long int p=0;
+            while(i<n && a[i]!='.')
+            {
+                p= (p*10)+ (a[i]-'0');
+                i++;
+            }
+            if(p>0)
+                return 1;
+            i++;
         }
-        while(y < v2.size()){
-            int a = stoi(v2[y]);
-            if(a != 0) return -1;
-            y++;
+        while(j<m)
+        {
+            long long int p=0;
+            while(j<m && b[j]!='.')
+            {
+                p= (p*10)+ (b[j]-'0');
+                j++;
+            }
+            if(p>0)
+                return -1;
+            j++;
         }
         return 0;
-    }
-    vector<string> split(string s, char d) {
-        stringstream ss(s);
-        vector<string> res;
-        string temp;
-        while(getline(ss,temp, '.')) {
-            res.push_back(temp);
-        }
-        return res;
     }
 };
