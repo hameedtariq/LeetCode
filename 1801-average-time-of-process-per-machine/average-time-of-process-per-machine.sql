@@ -1,7 +1,7 @@
 /* Write your PL/SQL query statement below */
-select a.machine_id as "machine_id", ROUND(AVG(b.timestamp - a.timestamp),3) as "processing_time" 
-from (select * from Activity where activity_type='start') a 
-join (select * from Activity where activity_type='end') b 
-on a.machine_id = b.machine_id and b.process_id = a.process_id
-group by a.machine_id
-order by "machine_id" ;
+-- select machine_id,count(process_id) from activity where activity_type  = 'start' group by machine_id ;
+/* Write your PL/SQL query statement below */
+
+SELECT machine_id, ROUND(SUM(CASE WHEN activity_type = 'start' THEN -timestamp ELSE timestamp END) / COUNT(DISTINCT process_id), 3) processing_time
+FROM Activity
+group by machine_id
