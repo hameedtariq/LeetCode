@@ -1,29 +1,31 @@
 class Solution {
 public:
+    
     int minDistance(string word1, string word2) {
-        vector<vector<int>> dp(word1.size(), vector<int>(word2.size(),-1));
-        return rec(word1,word2,0,0, dp);
-    }
-    int rec(string& w1, string& w2, int i, int j,vector<vector<int>>& dp) {
-
-        if(i == w1.size() && j == w2.size()) return 0;
-        if(i == w1.size()) {
-            // insert
-            return w2.size() - j;
+        int n=word1.size(),m=word2.size(),i,j;
+        if(word1==word2){
+            return 0;
         }
-        if(j == w2.size()) {
-            // insert
-            return w1.size() - i;
+        int dp[n+1][m+1];
+        dp[0][0]=0;
+        for(i=1;i<=n;i++){
+            dp[i][0]=i;
         }
-        if(dp[i][j] != -1) return dp[i][j];
-
-        if(w1[i] == w2[j]) {
-            return rec(w1, w2, i+1, j+1,dp);
+        for(i=1;i<=m;i++){
+            dp[0][i]=i;
         }
-
-        int insert = rec(w1,w2,i,j+1,dp);
-        int del = rec(w1,w2,i+1,j,dp);
-        int replace = rec(w1, w2, i+1, j+1,dp);
-        return dp[i][j] = min({insert,del,replace}) + 1;  
+         for(i=1;i<=n;i++){
+            for(j=1;j<=m;j++){
+                if(word1[i-1]==word2[j-1]){
+                    dp[i][j]=dp[i-1][j-1];
+                }
+                else{
+                    dp[i][j]=dp[i-1][j-1]+1;
+                }
+                dp[i][j]=min(dp[i-1][j]+1,dp[i][j]);
+                dp[i][j]=min(dp[i][j-1]+1,dp[i][j]);
+            }
+         }
+         return dp[n][m];
     }
 };
