@@ -1,4 +1,4 @@
-bool _ = [](){cin.tie(nullptr); cout.tie(nullptr); ios::sync_with_stdio(false); return true;};
+bool _ = [](){cin.tie(nullptr); cout.tie(nullptr); ios::sync_with_stdio(false); return true;}();
 
 class Solution {
 public:
