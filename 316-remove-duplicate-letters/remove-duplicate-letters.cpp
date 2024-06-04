@@ -1,3 +1,5 @@
+bool _ = [](){cin.tie(nullptr); cout.tie(nullptr); ios::sync_with_stdio(false); return true;};
+
 class Solution {
 public:
     string removeDuplicateLetters(string s) {
