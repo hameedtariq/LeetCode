@@ -1,28 +1,47 @@
 class Solution {
 public:
     int threeSumClosest(vector<int>& nums, int target) {
-        if(nums.size() == 3) return nums[0] + nums[1] + nums[2];  
+        int len = nums.size(); 
+        if(len == 3) return nums[0] + nums[1] + nums[2];
+        
         sort(nums.begin(), nums.end());
+        
         int ans = nums[0] + nums[1] + nums[2];
         if(ans >= target) return ans;
-        int left, right,closestSum = nums[0] + nums[1] + nums[2];
-        for(int i =0; i< nums.size(); i++) {
-            left = i+1;
-            right = nums.size()-1;
-            while(left < right) {
-                int sum = nums[i] + nums[left] + nums[right];
-                if(abs(target-sum) < abs(target-closestSum)) {
-                    closestSum = sum;
-                }
+        
+        int max = nums[len - 1] + nums[len - 2] + nums[len - 3];
+        if(max <= target) return max;
+        
+        int last = nums[0];
+        int left, right, sum, num;
+        int dist = abs(ans - target);
+        int i = 0;
 
-                if(target-sum < 0) {
-                    right--;
-                }else {
+        for(; i < len - 2; i++){
+            if (i && nums[i] == last)
+                continue;
+            last = num = nums[i];
+            left = i + 1;
+            right = len - 1;
+            while(left < right){
+                sum = num + nums[left] + nums[right];
+                if (sum == target) return sum;
+                if(abs(sum - target) < dist){
+                    ans = sum;
+                    dist = abs(ans - target);
+                }
+                if(sum < target){ 
+                    while(left < right && nums[left] == nums[left + 1])
+                        left++;
                     left++;
                 }
+                else{
+                     while(left < right && nums[right] == nums[right - 1])
+                        right--;
+                    right--;
+                }   
             }
-            
         }
-        return closestSum;
+        return ans;
     }
 };
