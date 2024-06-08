@@ -2,21 +2,22 @@ class Solution {
 public:
     int maximumGap(vector<int>& nums) {
         if(nums.size() == 1) return 0;
-        map<int,int> count;
+        set<int> numSet;
         for(auto &n: nums) {
-            count[n]++;
+            numSet.insert(n);
         } 
         int i =0;
-        for(auto & [key, val]: count) {
-            while(val) {
-                nums[i++] = key;
-                val--;
+        int maxGap = 0;
+        int prevVal = -1;
+        for(auto & num: numSet) {
+            if(prevVal == -1) {
+                prevVal = num;
+                continue;
             }
+            maxGap = max(maxGap, num - prevVal);
+            prevVal = num;
         }
-        int maxGap = INT_MIN;
-        for(int i =1; i<nums.size(); i++) {
-            maxGap = max(nums[i] - nums[i-1], maxGap);
-        }
+
         return maxGap;
     }
 };
