@@ -3,6 +3,8 @@ public:
     int threeSumClosest(vector<int>& nums, int target) {
         if(nums.size() == 3) return nums[0] + nums[1] + nums[2];  
         sort(nums.begin(), nums.end());
+        int ans = nums[0] + nums[1] + nums[2];
+        if(ans >= target) return ans;
         int left, right,closestSum = nums[0] + nums[1] + nums[2];
         for(int i =0; i< nums.size(); i++) {
             left = i+1;
