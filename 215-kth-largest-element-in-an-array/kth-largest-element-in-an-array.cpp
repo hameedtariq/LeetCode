@@ -1,26 +1,40 @@
 class Solution {
+    void bucketSort(std::vector<int>& nums) {
+    int size = nums.size();
+    if (size <= 1) return;
+
+    int minEl = *std::min_element(nums.begin(), nums.end());
+    int maxEl = *std::max_element(nums.begin(), nums.end());
+
+    if (minEl == maxEl) return; // All elements are the same, already sorted
+
+    // The range for determining bucket index
+    double range = static_cast<double>(maxEl - minEl + 1) / size;
+
+    std::vector<std::vector<int>> buckets(size);
+
+    // Distribute elements into buckets
+    for (const int& n : nums) {
+        int index = static_cast<int>((n - minEl) / range);
+        if (index >= size) {
+            index = size - 1; // Handle boundary case where index can be size
+        }
+        buckets[index].push_back(n);
+    }
+
+    // Sort each bucket and concatenate results
+    int index = 0;
+    for (int i = 0; i < size; ++i) {
+        std::sort(buckets[i].begin(), buckets[i].end());
+        for (const int& val : buckets[i]) {
+            nums[index++] = val;
+        }
+    }
+}
 public:
     int findKthLargest(vector<int>& nums, int k) {
-        // std::priority_queue<int> h;
-        // for (auto num: nums) {
-        //     h.push(num);
-        // }
-        // for (int i=0; i<k-1; i++)
-        //     h.pop();
-        // return h.top();
-
-        ios::sync_with_stdio(false);
-        cin.tie(NULL);
-        cout.tie(NULL);
-
-
-        auto f = nums.begin();
-        auto l = nums.end();
-
-        k = nums.size() - k;
-
-        nth_element(f, f + k, l);
-
-        return *(f + k);
+        bucketSort(nums);
+        return nums[nums.size()-k];
     }
+
 };
