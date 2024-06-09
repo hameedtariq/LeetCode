@@ -1,51 +1,39 @@
+
+bool _ = []{ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);return false;}();
 class Solution {
-    void bucketSort(std::vector<int>& nums) {
-        int size = nums.size();
-        if (size <= 1) return;
-
-        int minEl = *std::min_element(nums.begin(), nums.end());
-        int maxEl = *std::max_element(nums.begin(), nums.end());
-
-        if (minEl == maxEl) return; // All elements are the same, already sorted
-
-        // The range for determining bucket index
-        double range = static_cast<double>(maxEl - minEl + 1) / size;
-
-        std::vector<std::vector<int>> buckets(size);
-
-        // Distribute elements into buckets
-        for (const int& n : nums) {
-            int index = static_cast<int>((n - minEl) / range);
-            if (index >= size) {
-                index = size - 1; // Handle boundary case where index can be size
-            }
-            buckets[index].push_back(n);
-        }
-
-        // Sort each bucket and concatenate results
-        int index = 0;
-        for (int i = 0; i < size; ++i) {
-            std::sort(buckets[i].begin(), buckets[i].end());
-            for (const int& val : buckets[i]) {
-                nums[index++] = val;
-            }
-        }
-    }
 public:
-    int maximumGap(vector<int>& nums) {
-        if(nums.size() == 1) return 0;
-        bucketSort(nums);
-        int prevVal = -1;
-        int maxGap = 0;
-        for(auto & num: nums) {
-            if(prevVal == -1) {
-                prevVal = num;
-                continue;
-            }
-            maxGap = max(maxGap, num - prevVal);
-            prevVal = num;
+    int maximumGap(std::vector<int>& nums) {
+        int n = nums.size();
+        if (n < 2) return 0;
+        
+        int maxNum = *max_element(nums.begin(), nums.end());
+        int minNum = *min_element(nums.begin(), nums.end());
+        
+        if (maxNum == minNum) return 0;
+        
+        int gap = (maxNum - minNum) / (n - 1);
+        if ((maxNum - minNum) % (n - 1) != 0) {
+            gap++;
         }
-
-        return maxGap;
+        
+        std::vector<int> minArr(n, INT_MAX);
+        std::vector<int> maxArr(n, INT_MIN);
+        
+        for (int i = 0; i < n; i++) {
+            int bkt = (nums[i] - minNum) / gap;
+            minArr[bkt] = std::min(minArr[bkt], nums[i]);
+            maxArr[bkt] = std::max(maxArr[bkt], nums[i]);
+        }
+        
+        int ans = 0;
+        int prev = maxArr[0];
+        
+        for (int i = 1; i < n; i++) {
+            if (minArr[i] == INT_MAX) continue;
+            ans = std::max(ans, minArr[i] - prev);
+            prev = maxArr[i];
+        }
+        
+        return ans;
     }
 };
