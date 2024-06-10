@@ -11,36 +11,30 @@
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        if(lists.size() == 0) return nullptr;
-        return merge(lists, 0, lists.size()-1);
-    }
-    ListNode* merge(vector<ListNode*>& lists, int left, int right) {
-        if(left == right) return lists[left];
-        
-        int mid = left + (right-left)/2;
-        auto x = merge(lists, left, mid);
-        auto y = merge(lists, mid+1, right);
-
-        auto dummy = new ListNode();
-        auto curr = dummy;
-        while(x && y) {
-            if(x->val <= y->val) {
-                curr->next = x;
-                x = x->next;
-            }else {
-                curr->next = y;
-                y = y->next;
+        ListNode* ans;
+        priority_queue<int, vector<int>, greater<int>> pq;
+        for (auto list : lists) {
+            while (list != NULL) {
+                pq.push(list->val);
+                list = list->next;
             }
-            curr = curr->next;
         }
-        if(x) {
-            curr->next = x;
+        if (pq.empty()) {
+            return nullptr;
         }
-        if(y) {
-            curr->next = y;
+        ListNode* temp;
+        if (!pq.empty()) {
+            ans = new ListNode(0);
+            ans->val = pq.top();
+            temp = ans;
+            pq.pop();
         }
-        curr = dummy->next;
-        delete dummy;
-        return curr;
+        while (!pq.empty()) {
+            ListNode* temp1 = new ListNode(pq.top());
+            pq.pop();
+            temp->next = temp1;
+            temp = temp1;
+        }
+        return ans;
     }
 };
