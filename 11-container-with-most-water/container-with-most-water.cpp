@@ -1,3 +1,5 @@
+bool _ = []{ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);return false;}();
+
 class Solution {
 public:
     int maxArea(vector<int>& height) {
