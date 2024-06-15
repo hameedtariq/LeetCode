@@ -1,3 +1,4 @@
+bool _ = [](){ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); return false;}();
 class Solution {
 public:
     vector<int> twoSum(vector<int>& numbers, int target) {
@@ -6,7 +7,7 @@ public:
 
         while(start < end) {
             if(numbers[start] + numbers[end] == target) {
-                return move(vector<int>({start+1,end+1}));
+                return vector<int>({start+1,end+1});
             }else if (numbers[start] + numbers[end] < target) {
                 start++;
             }else {
