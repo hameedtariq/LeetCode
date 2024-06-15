@@ -6,7 +6,7 @@ public:
 
         while(start < end) {
             if(numbers[start] + numbers[end] == target) {
-                return vector<int>({start+1,end+1});
+                return move(vector<int>({start+1,end+1}));
             }else if (numbers[start] + numbers[end] < target) {
                 start++;
             }else {
