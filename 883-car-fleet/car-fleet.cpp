@@ -7,6 +7,9 @@ struct Car {
 class Solution {
 public:
     int carFleet(int target, vector<int>& position, vector<int>& speed) {
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+        ios::sync_with_stdio(false);
         // calulate the position after every second for every car
         // each second check if any cars have same pos and set their speeds to minimum of the fleet.
         // repeat this until target is reached.
