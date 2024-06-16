@@ -19,17 +19,20 @@ public:
         sort(cars.begin(), cars.end(), [](auto& a, auto& b) {
             return a.pos < b.pos;
         });
-        stack<Car> s;
+        Car* prev = nullptr;
+        int fleet = cars.size();
         for(int i = cars.size()-1; i >=0; i--) {
-            if(s.empty()) {
-                s.push(cars[i]);
+            if(!prev) {
+                prev = &cars[i];
             }else {
-                if(cars[i].time > s.top().time) { // they will not intersect
-                    s.push(cars[i]);
+                if(cars[i].time > prev->time) { // they will not intersect
+                    prev = &cars[i];
+                }else {
+                    fleet--;
                 }
 
             }
         }
-        return s.size();
+        return fleet;
     }
 };
