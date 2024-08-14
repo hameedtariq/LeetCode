@@ -14,16 +14,9 @@ public:
             }
         }
         for(int i =0; i<rows.size(); i++){
-            if(rows[i]) {
-                for(int j = 0; j<matrix[0].size(); j++) {
+            for(int j = 0; j<cols.size(); j++) {
+                if(rows[i] || cols[j]) {
                     matrix[i][j] = 0;
-                }
-            }
-        }
-        for(int i =0; i<cols.size(); i++){
-            if(cols[i]) {
-                for(int j = 0; j<matrix.size(); j++) {
-                    matrix[j][i] = 0;
                 }
             }
         }
