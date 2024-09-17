@@ -21,7 +21,6 @@ public:
             // i++;
             j=i;
         }
-        cout<<raj<<" ";
         return raj;
     }
     string countAndSay(int n) {
