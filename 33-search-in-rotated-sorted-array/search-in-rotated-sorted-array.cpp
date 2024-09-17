@@ -1,3 +1,4 @@
+const bool _ = []{ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); return true;}();
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
