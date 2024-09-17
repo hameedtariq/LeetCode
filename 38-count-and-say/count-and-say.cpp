@@ -1,25 +1,30 @@
 class Solution {
 public:
     string countAndSay(int n) {
-        if (n == 1) return "1";  // Base case
+        string result = "1";  // Start with the base case for n = 1
+        
+        for (int i = 2; i <= n; ++i) {
+            string current = "";  // Will store the next sequence
+            int count = 1;  // Initialize the count of the first character
 
-        string sub = countAndSay(n - 1);  // Recursive call
-        string newSub = "";
-        int count = 1;
-
-        // Loop through the string and apply RLE (Run Length Encoding)
-        for (int i = 1; i < sub.size(); ++i) {
-            if (sub[i] == sub[i - 1]) {
-                count++;  // Same character, increase the count
-            } else {
-                newSub += to_string(count) + sub[i - 1];  // Append count and the character
-                count = 1;  // Reset count for the next character
+            // Process the previous sequence (result) to generate the current one
+            for (int j = 1; j < result.size(); ++j) {
+                if (result[j] == result[j - 1]) {
+                    count++;  // Same character, increment count
+                } else {
+                    // Different character, append the count and previous character
+                    current += to_string(count) + result[j - 1];
+                    count = 1;  // Reset count for the new character
+                }
             }
+            
+            // Append the last group
+            current += to_string(count) + result.back();
+
+            // Update the result to the new sequence
+            result = current;
         }
-
-        // Append the last group
-        newSub += to_string(count) + sub.back();
-
-        return newSub;
+        
+        return result;
     }
 };
