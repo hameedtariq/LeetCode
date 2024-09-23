@@ -10,28 +10,26 @@
  * };
  */
 class Solution {
-    typedef TreeNode* t;
+    typedef TreeNode* tr;
     typedef vector<int> vi;
 public:
     vector<int> inorderTraversal(TreeNode* root) {
         if(!root) return vector<int>();
         vi ans;
-        stack<t> s;
-        s.push(root);
-        while(!s.empty()){
-            t p = s.top();
-            if(p->left){
-                s.push(p->left);
-                p->left = nullptr;
-            }else if(p->right) {
-                ans.push_back(p->val);
-                s.pop();
-                s.push(p->right);
-                p->right = nullptr;
-            }else {
-                ans.push_back(p->val);
-                s.pop();
+        stack<tr> s;
+        tr t = root;
+        while(t || !s.empty()){
+            while(t) {
+                s.push(t);
+                t = t->left;
             }
+            if(s.empty()) {
+                break;
+            }
+            t = s.top(); s.pop();
+            ans.push_back(t->val);
+            
+            t = t->right;
         }
         return ans;
     }
