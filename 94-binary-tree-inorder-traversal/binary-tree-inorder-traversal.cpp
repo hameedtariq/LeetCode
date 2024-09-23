@@ -14,14 +14,25 @@ class Solution {
     typedef vector<int> vi;
 public:
     vector<int> inorderTraversal(TreeNode* root) {
+        if(!root) return vector<int>();
         vi ans;
-        inorder(root, ans);
+        stack<t> s;
+        s.push(root);
+        while(!s.empty()){
+            t p = s.top();
+            if(p->left){
+                s.push(p->left);
+                p->left = nullptr;
+            }else if(p->right) {
+                ans.push_back(p->val);
+                s.pop();
+                s.push(p->right);
+                p->right = nullptr;
+            }else {
+                ans.push_back(p->val);
+                s.pop();
+            }
+        }
         return ans;
-    }
-    void inorder(t r, vi& ans) {
-        if(!r) return;
-        inorder(r->left,ans);
-        ans.push_back(r->val);
-        inorder(r->right,ans);
     }
 };
