@@ -9,16 +9,32 @@
 class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-        unordered_set<ListNode*> m;
+        int s1 = 1, s2 = 1;
         auto p = headA;
-        while(p) {
-            m.insert(p);
-            p = p->next;        
+        while(p->next) {
+            p = p->next;
+            s1++;        
         }
-        p = headB;
-        while(p) {
-            if(m.find(p) == m.end()) p = p->next;
-            else return p;
+        auto q = headB;
+        while(q->next) {
+            q = q->next;
+            s2++;        
+        }
+
+        if(p != q) return nullptr;
+
+        p = headA, q= headB;
+        while(p && q) {
+            if(p == q) return p;
+            if(s1 > s2) {
+                s1--;
+                cout << "P: " <<p->val << endl;
+                p = p->next;
+            }else {
+                s2--;
+                cout << "Q: " << q->val << endl;
+                q = q->next;
+            }
         }
 
         return nullptr;
