@@ -3,6 +3,8 @@ public:
     int longestSquareStreak(vector<int>& nums) {
         unordered_set<long long> ss;
 
+        sort(nums.begin(), nums.end());
+
         for(auto&n: nums) {
             ss.insert(n);
         }
@@ -12,6 +14,7 @@ public:
             long long x = pow(n,2);
             int l = 1;
             while(ss.find(x) != ss.end()) {
+                ss.erase(x);
                 l++;
                 x = pow(x, 2);
             }
