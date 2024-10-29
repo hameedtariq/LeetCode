@@ -1,36 +1,16 @@
-const int BS_SIZE = 100'001;
-bitset<BS_SIZE> bs;
 class Solution {
 public:
     int longestSquareStreak(vector<int>& nums) {
-        int start = INT_MAX;
-        for(int num : nums) {
-            bs[num] = 1;
-            start = min(start, num);
+        map<int, int>mp;
+        sort(nums.begin(), nums.end());
+        int res = -1;
+        for(int num: nums) {
+            int _sqrt = sqrt(num);
+            if(_sqrt*_sqrt == num && mp.find(_sqrt)!=mp.end()) {
+                mp[num] = mp[_sqrt]+1;
+                res = max(res, mp[num]);
+            } else mp[num] = 1;
         }
-
-        int ans = -1;
-        
-        for(int i = start; i != BS_SIZE; i = bs._Find_next(i)) {
-            bs[i] = 0; // auto-reset
-            if(i > 316) continue;
-            int num = i * i;
-            if(!bs[num]) continue;
-            bs[num] = 0;
-            int j = 2;
-            while(num <= 316) { // 316 = floor(sqrt(1e5)), where 1e5 is max constraint
-                num *= num;
-                if(bs[num]) {
-                    j++, bs[num] = 0; // auto-reset
-                }else {
-                    break;
-                }
-            }
-
-            ans = max(ans, j);
-        }
-
-
-        return ans;
+        return res;
     }
 };
