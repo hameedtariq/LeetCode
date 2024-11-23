@@ -3,7 +3,7 @@
 select p.product_id, 
     ROUND(
         SUM(p.price * COALESCE(us.units, 0))::decimal 
-        / COALESCE(NULLIF(SUM(COALESCE(us.units, 0)), 0),1), 
+        / CASE WHEN SUM(COALESCE(us.units, 0)) = 0 THEN 1 ELSE SUM(COALESCE(us.units, 0)) END, 
         2
     ) AS average_price
 from prices p 
