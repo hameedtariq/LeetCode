@@ -1,6 +1,2 @@
-/* Write your PL/SQL query statement below */
-select m.name from Employee m 
-join Employee e 
-on m.id = e.managerId
-group by m.id, m.name
-having count(e.id) > 4;
+-- Write your PostgreSQL query statement below
+SELECT m.name from Employee e JOIN Employee m ON e.managerId = m.id GROUP BY e.managerId, m.name HAVING COUNT(e.managerId) > 4;
