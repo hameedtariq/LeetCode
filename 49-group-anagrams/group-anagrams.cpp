@@ -1,24 +1,23 @@
-bool _ = [](){ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); return false;}();
 class Solution {
 public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
-        std::vector<std::string> sorted;
-
-        for (std::string s : strs) {
-            std::sort(s.begin(), s.end());
-            sorted.push_back(s);
+        unordered_map<string, vector<string>> m;
+        vector<int> v(26);
+        for(auto&str: strs) {
+            fill(v.begin(), v.end(), 0);
+            for(auto& c: str) {
+                v[c-'a']++;
+            }
+            string key = to_string(v[0]);
+            for (int i = 1; i < 26; ++i) {
+                key += ',' + to_string(v[i]);
+            }
+            m[key].push_back(str);
         }
-
-        std::unordered_map<std::string, std::vector<std::string>> map;
-
-        for (int i = 0; i < strs.size(); i++)
-            map[sorted[i]].push_back(strs[i]);
-
-        std::vector<std::vector<std::string>> ans;
-
-        for (const std::pair<std::string, std::vector<std::string>>& p : map)
-            ans.push_back(p.second);
-
-        return ans;
+        vector<vector<string>> res;
+        for(auto& pair: m) {
+            res.push_back(pair.second);
+        }
+        return res;
     }
 };
