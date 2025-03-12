@@ -1,26 +1,25 @@
+
+typedef unsigned long long ull;
 class Solution {
 public:
     int minEatingSpeed(vector<int>& piles, int h) {
-        int left = 1;
-        int right = *max_element(piles.begin(), piles.end());
-        
-        while (left <= right) {
-            int mid = (left + right) / 2;
-            if (isSolution(piles, h, mid)) {
-                right = mid - 1;
-            } else {
-                left = mid + 1;
+        int low = 1;
+        int high = *max_element(piles.begin(),piles.end());
+        int ans = high;
+        while(low < high){
+            int mid = low + ((high-low)>>2);
+            ull cnt = 0;
+            for(int i = 0; i < piles.size(); i++){
+                cnt += (piles[i]+mid-1)/mid;
+            }
+            if(cnt > h){
+                low = mid+1;
+            }
+            else{
+                ans = mid;
+                high = mid;
             }
         }
-        return left;
-    }
-    
-private:
-    bool isSolution(vector<int>& piles, int h, int k) {
-        for (int size : piles) {
-            h -= ceil((double)size / k);
-            if (h < 0) return false; // Too slow
-        }
-        return true; // Can finish in h hours
+        return ans;
     }
 };
